@@ -10,9 +10,11 @@ localizationProvider.Load();
 
 var effectorModel = Deserialize<EffectorModel>(@"Going Medieval_Data\StreamingAssets\StatsSystem\Effectors.json");
 var resourcesModel = Deserialize<ResourceModel>(@"Going Medieval_Data\StreamingAssets\Resources\Resources.json");
-var decayModifiersModel = Deserialize<DecayModifierModel>(@"Going Medieval\Going Medieval_Data\StreamingAssets\Resources\DecayModifiers.json");
+var decayModifiersModel = Deserialize<DecayModifierModel>(@"Going Medieval_Data\StreamingAssets\Resources\DecayModifiers.json");
 
+Console.WriteLine("Finished.");
 
+Console.ReadLine();
 
 T Deserialize<T>(string path)
 {

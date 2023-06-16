@@ -41,7 +41,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Resources
             [JsonProperty("devCommentThermal")] string devCommentThermal,
             [JsonProperty("thermalModelID")] string thermalModelID,
             [JsonProperty("devCommentCal")] string devCommentCal,
-            [JsonProperty("caloriesCount")] int? caloriesCount,
+            [JsonProperty("caloriesCount")] float? caloriesCount,
             [JsonProperty("beautyInputOnShelf")] int? beautyInputOnShelf,
             [JsonProperty("fermentModifiersId")] string fermentModifiersId,
             [JsonProperty("fermentedId")] string fermentedId,
@@ -198,7 +198,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Resources
         public string DevCommentCal { get; }
 
         [JsonProperty("caloriesCount")]
-        public int? CaloriesCount { get; }
+        public float? CaloriesCount { get; }
 
         [JsonProperty("beautyInputOnShelf")]
         public int? BeautyInputOnShelf { get; }
