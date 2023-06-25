@@ -1,38 +1,51 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using GoingMedievalWikiPopulator;
 using GoingMedievalWikiPopulator.Decay;
-using GoingMedievalWikiPopulator.JsonModels.DecayModifiers;
-using GoingMedievalWikiPopulator.JsonModels.Moods;
-using GoingMedievalWikiPopulator.JsonModels.Resources;
-using Newtonsoft.Json;
+using GoingMedievalWikiPopulator.Effectors;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
-if (Directory.Exists("Output"))
+ClearOutputDirectory();
+
+var builder = Host.CreateApplicationBuilder(args);
+
+builder.Services.AddScoped<LocalizationProvider>();
+builder.Services.AddScoped<GameModelProvider>();
+builder.Services.AddTransient<DecayGenerator>();
+builder.Services.AddTransient<MoodTableGenerator>();
+
+var host = builder.Build();
+
+using var serviceScope = host.Services.CreateScope();
+var provider = serviceScope.ServiceProvider;
+
+var generators = new[]
 {
-    DirectoryInfo di = new DirectoryInfo("Output");
+    typeof(MoodTableGenerator),
+    typeof(DecayGenerator)
+};
 
-    foreach (FileInfo file in di.GetFiles())
-    {
-        file.Delete();
-    }
-    foreach (DirectoryInfo dir in di.GetDirectories())
-    {
-        dir.Delete(true);
-    }
-}
-else
+Console.WriteLine("Please choose which of the following generators you wish to use:");
+for (int i = 1; i <= generators.Length; i++)
 {
-    Directory.CreateDirectory("Output");
+    Console.WriteLine($"[{i}] {generators[i - 1].Name}");
+}
+Console.WriteLine();
+
+Console.Write("> ");
+var response = (int)char.GetNumericValue(Console.ReadKey().KeyChar);
+
+Console.WriteLine();
+
+if (response < 1 || response > generators.Length)
+{
+    return 1;
 }
 
-var localizationProvider = new LocalizationProvider();
-localizationProvider.Load();
+var generatorType = generators[response - 1];
 
-var effectorModel = Deserialize<EffectorModel>(@"Going Medieval_Data\StreamingAssets\StatsSystem\Effectors.json");
-var resourcesModel = Deserialize<ResourceModel>(@"Going Medieval_Data\StreamingAssets\Resources\Resources.json");
-var decayModifiersModel = Deserialize<DecayModifierModel>(@"Going Medieval_Data\StreamingAssets\Resources\DecayModifiers.json");
-
-var decayGenerator = new DecayGenerator(localizationProvider, resourcesModel, decayModifiersModel);
-var results = decayGenerator.Generate();
+var generator = (IGenerator)provider.GetRequiredService(generatorType);
+var results = generator.Generate();
 
 foreach (var result in results)
 {
@@ -46,16 +59,25 @@ Console.WriteLine("Finished.");
 
 Console.ReadLine();
 
-T Deserialize<T>(string path)
+return 0;
+
+void ClearOutputDirectory()
 {
-    var json = File.ReadAllText(path);
-
-    var result = JsonConvert.DeserializeObject<T>(json);
-
-    if (result is null)
+    if (Directory.Exists("Output"))
     {
-        throw new InvalidOperationException($"Deserialization of '{path}' returned null.");
-    }
+        DirectoryInfo di = new DirectoryInfo("Output");
 
-    return result;
+        foreach (FileInfo file in di.GetFiles())
+        {
+            file.Delete();
+        }
+        foreach (DirectoryInfo dir in di.GetDirectories())
+        {
+            dir.Delete(true);
+        }
+    }
+    else
+    {
+        Directory.CreateDirectory("Output");
+    }
 }

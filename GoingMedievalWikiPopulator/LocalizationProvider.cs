@@ -6,9 +6,9 @@ namespace GoingMedievalWikiPopulator
     {
         private const string LocalizationFileName = "Localization.json";
 
-        private Dictionary<string, string> _repository = default!;
+        private readonly Dictionary<string, string> _repository;
 
-        public void Load()
+        public LocalizationProvider()
         {
             var json = File.ReadAllText(LocalizationFileName);
             _repository = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;

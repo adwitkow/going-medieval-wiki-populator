@@ -5,24 +5,35 @@ using GoingMedievalWikiPopulator.JsonModels.Moods;
 
 namespace GoingMedievalWikiPopulator.Effectors
 {
-    internal class MoodTableGenerator
+    internal class MoodTableGenerator : IGenerator
     {
         private readonly LocalizationProvider _localizationProvider;
 
         private readonly ICollection<string> _lines;
+        private readonly EffectorModel _effectorModel;
 
-        public MoodTableGenerator(LocalizationProvider localizationProvider)
+        public MoodTableGenerator(LocalizationProvider localizationProvider, GameModelProvider modelProvider)
         {
             _lines = new List<string>();
-            this._localizationProvider = localizationProvider;
+            _localizationProvider = localizationProvider;
+            
+            _effectorModel = modelProvider.GetModel<EffectorModel>();
         }
 
-        public string[] Generate(EffectorModel moodModel)
+        public string Directory => throw new NotImplementedException();
+
+        public GenerationResult[] Generate()
+        {
+            GenerateTable();
+            return new[] { new GenerationResult("Table", _lines.ToArray()) };
+        }
+
+        public void GenerateTable()
         {
             _lines.Clear();
 
             var moodRepository = new MoodRepository(_localizationProvider);
-            moodRepository.Load(moodModel!);
+            moodRepository.Load(_effectorModel);
 
             _lines.Add("== Moods ==");
             _lines.Add("The following are all mood effects available in the game. Since they were ripped straight from a data file (categories included), there may be some inconsistencies or mistakes in spelling that may be marked with a Sic! or corrected/reorganized.");
@@ -42,8 +53,6 @@ namespace GoingMedievalWikiPopulator.Effectors
 
                 CreateCategorySection(category, sortedMoods);
             }
-
-            return _lines.ToArray();
         }
 
         private void CreateCategorySection(string category, IEnumerable<Mood> moods)

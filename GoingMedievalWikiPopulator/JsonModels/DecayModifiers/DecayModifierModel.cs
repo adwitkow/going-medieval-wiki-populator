@@ -2,7 +2,8 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
 {
-    public class DecayModifierModel
+    [AssetFile(@"Resources\DecayModifiers.json")]
+    public class DecayModifierModel : IJsonModel
     {
         [JsonConstructor]
         public DecayModifierModel(

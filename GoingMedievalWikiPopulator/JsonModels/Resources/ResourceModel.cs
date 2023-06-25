@@ -2,7 +2,8 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.Resources
 {
-    public class ResourceModel
+    [AssetFile(@"Resources\Resources.json")]
+    public class ResourceModel : IJsonModel
     {
         [JsonConstructor]
         public ResourceModel(

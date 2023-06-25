@@ -2,7 +2,8 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.Moods
 {
-    public class EffectorModel
+    [AssetFile(@"StatsSystem\Effectors.json")]
+    public class EffectorModel : IJsonModel
     {
         [JsonConstructor]
         public EffectorModel(

@@ -22,9 +22,12 @@ namespace GoingMedievalWikiPopulator.Decay
         private readonly Dictionary<string, DecayModifier> _decayModifiers;
         private readonly Dictionary<string, Resource> _resources;
 
-        public DecayGenerator(LocalizationProvider locProvider, ResourceModel resourceModel, DecayModifierModel decayModel)
+        public DecayGenerator(LocalizationProvider locProvider, GameModelProvider modelProvider)
         {
             _localizationProvider = locProvider;
+
+            var resourceModel = modelProvider.GetModel<ResourceModel>();
+            var decayModel = modelProvider.GetModel<DecayModifierModel>();
             _resources = ProcessResources(resourceModel);
             _decayModifiers = ProcessDecayModel(decayModel);
         }
