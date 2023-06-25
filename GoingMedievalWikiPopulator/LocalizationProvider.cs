@@ -14,8 +14,14 @@ namespace GoingMedievalWikiPopulator
             _repository = JsonConvert.DeserializeObject<Dictionary<string, string>>(json)!;
         }
 
-        public bool TryLocalize(string stringId, out string? localized)
+        public bool TryLocalize(string? stringId, out string? localized)
         {
+            if (string.IsNullOrEmpty(stringId))
+            {
+                localized = null;
+                return false;
+            }
+
             return _repository.TryGetValue(stringId.ToLower(), out localized);
         }
     }
