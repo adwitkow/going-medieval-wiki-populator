@@ -1,9 +1,9 @@
 ﻿using GoingMedievalWikiPopulator.JsonModels.DecayModifiers;
 using GoingMedievalWikiPopulator.JsonModels.Resources;
 
-namespace GoingMedievalWikiPopulator.Generators.Decay
+namespace GoingMedievalWikiPopulator.Generators.Resources
 {
-    internal class DecayGenerator : IGenerator
+    internal class DecayGenerator : ISubGenerator
     {
         private const string FermentationSection = "Fermentation";
         private const string DecompositionSection = "Decomposition";
@@ -32,9 +32,7 @@ namespace GoingMedievalWikiPopulator.Generators.Decay
             _decayModifiers = ProcessDecayModel(decayModel);
         }
 
-        public string Directory => "Decay";
-
-        public GenerationResult[] Generate()
+        public IEnumerable<GenerationResult> Generate()
         {
             var results = new List<GenerationResult>();
 
@@ -64,8 +62,8 @@ namespace GoingMedievalWikiPopulator.Generators.Decay
                     AddRotSubsection(resource, lines, rotModifierId);
                 }
 
-                var name = Localize(resource.LocKeys[0].Name);
-                results.Add(new GenerationResult(name, lines.ToArray()));
+                var path = Path.Combine(resource.Id, "decay");
+                results.Add(new GenerationResult(path, lines.ToArray()));
             }
 
             return results.ToArray();

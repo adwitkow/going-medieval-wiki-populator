@@ -1,7 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using GoingMedievalWikiPopulator;
-using GoingMedievalWikiPopulator.Generators.Decay;
 using GoingMedievalWikiPopulator.Generators.Effectors;
+using GoingMedievalWikiPopulator.Generators.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -11,6 +11,7 @@ builder.Services.AddScoped<LocalizationProvider>();
 builder.Services.AddScoped<GameModelProvider>();
 builder.Services.AddTransient<DecayGenerator>();
 builder.Services.AddTransient<MoodTableGenerator>();
+builder.Services.AddTransient<ResourcesGenerator>();
 
 var host = builder.Build();
 
@@ -20,7 +21,7 @@ var provider = serviceScope.ServiceProvider;
 var generators = new[]
 {
     typeof(MoodTableGenerator),
-    typeof(DecayGenerator)
+    typeof(ResourcesGenerator)
 };
 
 Console.WriteLine("Please choose which of the following generators you wish to use:");
@@ -50,10 +51,25 @@ var results = generator.Generate();
 
 foreach (var result in results)
 {
-    var path = Path.Combine("Output", generator.Directory, $"{result.FileName}.txt");
+    var directoryPath = Path.Combine("Output", generator.Directory);
+    var resultDirectory = Path.GetDirectoryName(result.FileName);
+
+    string resultPath;
+    if (!string.IsNullOrEmpty(resultDirectory))
+    {
+        resultPath = Path.Combine(directoryPath, resultDirectory);
+        Directory.CreateDirectory(resultPath);
+    }
+    else
+    {
+        resultPath = directoryPath;
+    }
+
+    var fileName = Path.GetFileName(result.FileName);
+    var path = Path.Combine(resultPath, $"{fileName}.txt");
     File.WriteAllLines(path, result.Lines);
 
-    Console.WriteLine($"Saved {result.FileName}.txt");
+    Console.WriteLine($"Saved {directoryPath}{result.FileName}.txt");
 }
 
 Console.WriteLine("Finished.");
