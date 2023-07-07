@@ -62,7 +62,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                     AddRotSubsection(resource, lines, rotModifierId);
                 }
 
-                var path = Path.Combine(resource.Id, "decay");
+                var name = _localizationProvider.Localize(resource.LocKeys[0].Name).Trim();
+                var path = Path.Combine(name, "decay");
                 results.Add(new GenerationResult(path, lines.ToArray()));
             }
 
@@ -83,7 +84,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                 if (!string.IsNullOrEmpty(resource.RottenId))
                 {
                     var rotProductResource = _resources[resource.RottenId];
-                    rotProduct = Localize(rotProductResource.LocKeys[0].Name);
+                    rotProduct = _localizationProvider.Localize(rotProductResource.LocKeys[0].Name);
                 }
                 var rotModifier = _decayModifiers[rotModifierId];
                 AddDecaySubsection(lines, rotModifier, RotSection, "Temperature Decay Table", rotProduct);
@@ -119,7 +120,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                 if (!string.IsNullOrEmpty(resource.FermentedId))
                 {
                     var fermentProductResource = _resources[resource.FermentedId];
-                    fermentProduct = Localize(fermentProductResource.LocKeys[0].Name);
+                    fermentProduct = _localizationProvider.Localize(fermentProductResource.LocKeys[0].Name);
                 }
                 var fermentModifier = _decayModifiers[fermentModifierId];
                 AddDecaySubsection(lines, fermentModifier, FermentationSection, "Fermentation Table", fermentProduct);
@@ -205,18 +206,6 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             }
 
             return results;
-        }
-
-        private string Localize(string toLocalize)
-        {
-            if (_localizationProvider.TryLocalize(toLocalize, out var result))
-            {
-                return result!;
-            }
-            else
-            {
-                return toLocalize;
-            }
         }
     }
 }

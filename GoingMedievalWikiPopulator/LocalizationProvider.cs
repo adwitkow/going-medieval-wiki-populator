@@ -24,5 +24,10 @@ namespace GoingMedievalWikiPopulator
 
             return _repository.TryGetValue(stringId.ToLower(), out localized);
         }
+
+        public string Localize(string stringId)
+        {
+            return TryLocalize(stringId, out var result) ? result! : stringId;
+        }
     }
 }

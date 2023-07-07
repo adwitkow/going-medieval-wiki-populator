@@ -5,15 +5,18 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
     internal class ResourcesGenerator : IGenerator
     {
         private readonly Dictionary<string, Resource> _resources;
+        private readonly LocalizationProvider _localizationProvider;
         private readonly DecayGenerator _decayGenerator;
 
         public string Directory => "Resources";
 
         public ResourcesGenerator(LocalizationProvider locProvider, GameModelProvider modelProvider, DecayGenerator decayGenerator)
         {
+            _localizationProvider = locProvider;
+            _decayGenerator = decayGenerator;
+
             var resourceModel = modelProvider.GetModel<ResourceModel>();
             _resources = ProcessResources(resourceModel);
-            _decayGenerator = decayGenerator;
         }
 
         public GenerationResult[] Generate()
@@ -22,7 +25,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
 
             foreach (var resource in _resources.Values)
             {
-                var path = Path.Combine(resource.Id, "test");
+                var name = _localizationProvider.Localize(resource.LocKeys[0].Name).Trim();
+                var path = Path.Combine(name, "test");
                 var result = new GenerationResult(path, new string[] {});
                 results.Add(result);
             }

@@ -69,7 +69,7 @@ foreach (var result in results)
     var path = Path.Combine(resultPath, $"{fileName}.txt");
     File.WriteAllLines(path, result.Lines);
 
-    Console.WriteLine($"Saved {directoryPath}{result.FileName}.txt");
+    Console.WriteLine($"Saved {directoryPath}\\{result.FileName}.txt");
 }
 
 Console.WriteLine("Finished.");
