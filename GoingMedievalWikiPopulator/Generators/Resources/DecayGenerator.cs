@@ -62,6 +62,13 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                     AddRotSubsection(resource, lines, rotModifierId);
                 }
 
+                string line = lines.Last();
+                while (string.IsNullOrWhiteSpace(line))
+                {
+                    lines.RemoveAt(lines.Count - 1);
+                    line = lines.Last();
+                }
+
                 var name = _localizationProvider.Localize(resource.LocKeys[0].Name).Trim();
                 var path = Path.Combine(name, "decay");
                 results.Add(new GenerationResult(path, lines.ToArray()));
