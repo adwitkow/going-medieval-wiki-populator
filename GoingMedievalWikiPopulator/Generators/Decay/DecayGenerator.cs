@@ -1,7 +1,7 @@
 ﻿using GoingMedievalWikiPopulator.JsonModels.DecayModifiers;
 using GoingMedievalWikiPopulator.JsonModels.Resources;
 
-namespace GoingMedievalWikiPopulator.Decay
+namespace GoingMedievalWikiPopulator.Generators.Decay
 {
     internal class DecayGenerator : IGenerator
     {
@@ -32,7 +32,7 @@ namespace GoingMedievalWikiPopulator.Decay
             _decayModifiers = ProcessDecayModel(decayModel);
         }
 
-        public string Directory => throw new NotImplementedException();
+        public string Directory => "Decay";
 
         public GenerationResult[] Generate()
         {
@@ -150,7 +150,7 @@ namespace GoingMedievalWikiPopulator.Decay
             {
                 lines.Add($"{{{{{temperatureTemplate}}}}}");
             }
-            
+
             var groundDecay = modifier.GroundCoefficient;
             if (groundDecay.HasValue && groundDecay != 0)
             {

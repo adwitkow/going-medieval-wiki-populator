@@ -2,8 +2,9 @@
 using Humanizer;
 using Newtonsoft.Json;
 using GoingMedievalWikiPopulator.JsonModels.Moods;
+using GoingMedievalWikiPopulator.Generators.Effectors.Moods;
 
-namespace GoingMedievalWikiPopulator.Effectors
+namespace GoingMedievalWikiPopulator.Generators.Effectors
 {
     internal class MoodTableGenerator : IGenerator
     {
@@ -16,11 +17,11 @@ namespace GoingMedievalWikiPopulator.Effectors
         {
             _lines = new List<string>();
             _localizationProvider = localizationProvider;
-            
+
             _effectorModel = modelProvider.GetModel<EffectorModel>();
         }
 
-        public string Directory => throw new NotImplementedException();
+        public string Directory => "Mood";
 
         public GenerationResult[] Generate()
         {

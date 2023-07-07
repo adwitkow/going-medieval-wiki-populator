@@ -1,4 +1,4 @@
-﻿using GoingMedievalWikiPopulator.Effectors;
+﻿using GoingMedievalWikiPopulator.Generators.Effectors;
 using Newtonsoft.Json;
 
 namespace GoingMedievalWikiPopulator.JsonModels.Moods

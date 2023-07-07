@@ -1,4 +1,4 @@
-﻿namespace GoingMedievalWikiPopulator.Effectors.Moods
+﻿namespace GoingMedievalWikiPopulator.Generators.Effectors.Moods
 {
     internal struct Mood
     {

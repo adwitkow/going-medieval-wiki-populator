@@ -1,6 +1,6 @@
 ﻿using GoingMedievalWikiPopulator.JsonModels.Moods;
 
-namespace GoingMedievalWikiPopulator.Effectors.Moods
+namespace GoingMedievalWikiPopulator.Generators.Effectors.Moods
 {
     internal class MoodRepository
     {
@@ -48,7 +48,7 @@ namespace GoingMedievalWikiPopulator.Effectors.Moods
             }
 
             var categoryExists = _moods.TryGetValue(moodCategory, out var category);
-            if (categoryExists) 
+            if (categoryExists)
             {
                 category!.Add(mood);
             }

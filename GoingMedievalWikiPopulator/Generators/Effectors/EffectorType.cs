@@ -1,4 +1,4 @@
-﻿namespace GoingMedievalWikiPopulator.Effectors
+﻿namespace GoingMedievalWikiPopulator.Generators.Effectors
 {
     public enum EffectorType
     {
