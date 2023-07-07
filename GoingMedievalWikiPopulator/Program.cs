@@ -1,11 +1,9 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using GoingMedievalWikiPopulator;
-using GoingMedievalWikiPopulator.Decay;
-using GoingMedievalWikiPopulator.Effectors;
+using GoingMedievalWikiPopulator.Generators.Decay;
+using GoingMedievalWikiPopulator.Generators.Effectors;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-
-ClearOutputDirectory();
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -45,11 +43,14 @@ if (response < 1 || response > generators.Length)
 var generatorType = generators[response - 1];
 
 var generator = (IGenerator)provider.GetRequiredService(generatorType);
+
+ClearOutputDirectory(generator.Directory);
+
 var results = generator.Generate();
 
 foreach (var result in results)
 {
-    var path = Path.Combine("Output", $"{result.FileName}.txt");
+    var path = Path.Combine("Output", generator.Directory, $"{result.FileName}.txt");
     File.WriteAllLines(path, result.Lines);
 
     Console.WriteLine($"Saved {result.FileName}.txt");
@@ -61,11 +62,12 @@ Console.ReadLine();
 
 return 0;
 
-void ClearOutputDirectory()
+void ClearOutputDirectory(string directory)
 {
-    if (Directory.Exists("Output"))
+    var path = Path.Combine("Output", directory);
+    if (Directory.Exists(path))
     {
-        DirectoryInfo di = new DirectoryInfo("Output");
+        DirectoryInfo di = new DirectoryInfo(path);
 
         foreach (FileInfo file in di.GetFiles())
         {
@@ -78,6 +80,6 @@ void ClearOutputDirectory()
     }
     else
     {
-        Directory.CreateDirectory("Output");
+        Directory.CreateDirectory(path);
     }
 }
