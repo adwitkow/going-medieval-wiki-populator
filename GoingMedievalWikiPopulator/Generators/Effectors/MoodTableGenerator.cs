@@ -1,6 +1,4 @@
-﻿using GoingMedievalWikiPopulator.Effectors.Moods;
-using Humanizer;
-using Newtonsoft.Json;
+﻿using Humanizer;
 using GoingMedievalWikiPopulator.JsonModels.Moods;
 using GoingMedievalWikiPopulator.Generators.Effectors.Moods;
 
