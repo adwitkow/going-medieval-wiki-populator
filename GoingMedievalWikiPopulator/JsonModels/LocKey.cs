@@ -30,7 +30,7 @@ namespace GoingMedievalWikiPopulator.JsonModels
         [JsonProperty("tooltipLines")]
         public IReadOnlyList<string> TooltipLines { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType() || obj is not LocKey locKey)
             {

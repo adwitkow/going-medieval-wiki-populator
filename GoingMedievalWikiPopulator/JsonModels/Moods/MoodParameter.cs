@@ -20,7 +20,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Moods
         [JsonProperty("value")]
         public string Value { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType() || obj is not MoodParameter other)
             {

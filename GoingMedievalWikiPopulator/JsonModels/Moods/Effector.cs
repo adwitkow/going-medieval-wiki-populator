@@ -60,7 +60,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Moods
         [JsonProperty("stackMultiplier")]
         public double? StackMultiplier { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType() || obj is not Effector effector)
             {

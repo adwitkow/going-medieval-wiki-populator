@@ -26,7 +26,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Moods
         [JsonProperty("parameters")]
         public IReadOnlyList<MoodParameter> Parameters { get; }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
             if (obj == null || GetType() != obj.GetType() || obj is not MoodEffect effect)
             {
