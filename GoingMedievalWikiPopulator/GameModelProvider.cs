@@ -19,7 +19,7 @@ namespace GoingMedievalWikiPopulator
             where TModel : IJsonModel<T>
             where T : IIdentifiable
         {
-            if (_processedModelCache.TryGetValue(typeof(T), out var dictionary))
+            if (_processedModelCache.TryGetValue(typeof(TModel), out var dictionary))
             {
                 return (Dictionary<string, T>)dictionary;
             }
@@ -52,9 +52,20 @@ namespace GoingMedievalWikiPopulator
         {
             var results = new Dictionary<string, T>();
 
-            foreach (var resource in selector.Invoke(model))
+            foreach (var child in selector.Invoke(model))
             {
-                results.Add(resource.Id, resource);
+                if (results.TryGetValue(child.Id, out var duplicate))
+                {
+                    if (!duplicate.Equals(child))
+                    {
+                        throw new InvalidOperationException($"Duplicate key: '{child.Id}'");
+                    }
+
+                    results[child.Id] = child;
+                    continue;
+                }
+
+                results.Add(child.Id, child);
             }
 
             _processedModelCache.Add(typeof(TModel), results);
