@@ -1,5 +1,6 @@
 ﻿// See https://aka.ms/new-console-template for more information
 using GoingMedievalWikiPopulator;
+using GoingMedievalWikiPopulator.Generators;
 using GoingMedievalWikiPopulator.Generators.Effectors;
 using GoingMedievalWikiPopulator.Generators.Resources;
 using Microsoft.Extensions.DependencyInjection;
@@ -10,6 +11,7 @@ var builder = Host.CreateApplicationBuilder(args);
 builder.Services.AddScoped<LocalizationProvider>();
 builder.Services.AddScoped<GameModelProvider>();
 builder.Services.AddTransient<DecayGenerator>();
+builder.Services.AddTransient<DescriptionGenerator>();
 builder.Services.AddTransient<MoodTableGenerator>();
 builder.Services.AddTransient<ResourcesGenerator>();
 
