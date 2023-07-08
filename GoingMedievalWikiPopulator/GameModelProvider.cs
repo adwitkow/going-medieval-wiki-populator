@@ -8,9 +8,27 @@ namespace GoingMedievalWikiPopulator
     {
         private static readonly string BasePath = Path.Combine("Going Medieval_Data", "StreamingAssets");
 
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification = "This will class will be a cached singleton service in the future")]
-        public T GetModel<T>()
-            where T : IJsonModel
+        private readonly Dictionary<Type, object> _processedModelCache;
+
+        public GameModelProvider()
+        {
+            _processedModelCache = new Dictionary<Type, object>();
+        }
+
+        public Dictionary<string, T> GetModels<TModel, T>()
+            where TModel : IJsonModel<T>
+            where T : IIdentifiable
+        {
+            if (_processedModelCache.TryGetValue(typeof(T), out var dictionary))
+            {
+                return (Dictionary<string, T>)dictionary;
+            }
+
+            var model = GetModel<TModel>();
+            return ProcessAndCacheModel(model, model => model.Items);
+        }
+
+        private static T GetModel<T>()
         {
             var attribute = typeof(T).GetCustomAttribute<AssetFileAttribute>()
                 ?? throw new InvalidOperationException("Trying to find a path to the model that doesn't have AssetFileAttribute");
@@ -27,6 +45,21 @@ namespace GoingMedievalWikiPopulator
             var result = JsonConvert.DeserializeObject<T>(json);
 
             return result is null ? throw new InvalidOperationException($"Deserialization of '{path}' returned null.") : result;
+        }
+
+        private Dictionary<string, T> ProcessAndCacheModel<TModel, T>(TModel model, Func<TModel, IReadOnlyList<T>> selector)
+            where T : IIdentifiable
+        {
+            var results = new Dictionary<string, T>();
+
+            foreach (var resource in selector.Invoke(model))
+            {
+                results.Add(resource.Id, resource);
+            }
+
+            _processedModelCache.Add(typeof(TModel), results);
+
+            return results;
         }
     }
 }

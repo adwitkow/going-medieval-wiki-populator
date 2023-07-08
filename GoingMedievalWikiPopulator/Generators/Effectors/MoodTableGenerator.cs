@@ -9,14 +9,14 @@ namespace GoingMedievalWikiPopulator.Generators.Effectors
         private readonly LocalizationProvider _localizationProvider;
 
         private readonly ICollection<string> _lines;
-        private readonly EffectorModel _effectorModel;
+        private readonly Dictionary<string, Effector> _effectors;
 
         public MoodTableGenerator(LocalizationProvider localizationProvider, GameModelProvider modelProvider)
         {
             _lines = new List<string>();
             _localizationProvider = localizationProvider;
 
-            _effectorModel = modelProvider.GetModel<EffectorModel>();
+            _effectors = modelProvider.GetModels<EffectorModel, Effector>();
         }
 
         public string Directory => "Mood";
@@ -32,7 +32,7 @@ namespace GoingMedievalWikiPopulator.Generators.Effectors
             _lines.Clear();
 
             var moodRepository = new MoodRepository(_localizationProvider);
-            moodRepository.Load(_effectorModel);
+            moodRepository.Load(_effectors.Values);
 
             _lines.Add("== Moods ==");
             _lines.Add("The following are all mood effects available in the game. Since they were ripped straight from a data file (categories included), there may be some inconsistencies or mistakes in spelling that may be marked with a Sic! or corrected/reorganized.");

@@ -13,9 +13,7 @@ namespace GoingMedievalWikiPopulator.Generators
         {
             _localizationProvider = locProvider;
 
-            var resourceModel = modelProvider.GetModel<ResourceModel>();
-            _resources = ProcessResources(resourceModel);
-
+            _resources = modelProvider.GetModels<ResourceModel, Resource>();
             _lines = new List<string>();
         }
 
@@ -35,18 +33,6 @@ namespace GoingMedievalWikiPopulator.Generators
                 var path = Path.Combine(name, "description");
                 results.Add(new GenerationResult(path, _lines.ToArray()));
             }
-            return results;
-        }
-
-        private static Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
-        {
-            var results = new Dictionary<string, Resource>();
-
-            foreach (var resource in resourceModel.Resources)
-            {
-                results.Add(resource.Id, resource);
-            }
-
             return results;
         }
     }

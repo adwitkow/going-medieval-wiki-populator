@@ -2,7 +2,7 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.Resources
 {
-    public class Resource
+    public class Resource : IIdentifiable
     {
         [JsonConstructor]
         public Resource(

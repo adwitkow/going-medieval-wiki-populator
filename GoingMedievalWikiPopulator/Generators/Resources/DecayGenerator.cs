@@ -28,10 +28,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
         {
             _localizationProvider = locProvider;
 
-            var resourceModel = modelProvider.GetModel<ResourceModel>();
-            var decayModel = modelProvider.GetModel<DecayModifierModel>();
-            _resources = ProcessResources(resourceModel);
-            _decayModifiers = ProcessDecayModel(decayModel);
+            _resources = modelProvider.GetModels<ResourceModel, Resource>();
+            _decayModifiers = modelProvider.GetModels<DecayModifierModel, DecayModifier>();
 
             _lines = new List<string>();
         }
@@ -191,30 +189,6 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             _lines.Add(string.Empty);
             _lines.Add("{{Clear|left}}");
             _lines.Add(string.Empty);
-        }
-
-        private static Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
-        {
-            var results = new Dictionary<string, Resource>();
-
-            foreach (var resource in resourceModel.Resources)
-            {
-                results.Add(resource.Id, resource);
-            }
-
-            return results;
-        }
-
-        private static Dictionary<string, DecayModifier> ProcessDecayModel(DecayModifierModel model)
-        {
-            var results = new Dictionary<string, DecayModifier>();
-
-            foreach (var modifier in model.DecayModifiers)
-            {
-                results.Add(modifier.Id, modifier);
-            }
-
-            return results;
         }
     }
 }

@@ -3,17 +3,17 @@
 namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
 {
     [AssetFile(@"Resources\DecayModifiers.json")]
-    public class DecayModifierModel : IJsonModel
+    public class DecayModifierModel : IJsonModel<DecayModifier>
     {
         [JsonConstructor]
         public DecayModifierModel(
             [JsonProperty("repository")] List<DecayModifier> modifiers
         )
         {
-            this.DecayModifiers = modifiers;
+            Items = modifiers;
         }
 
         [JsonProperty("repository")]
-        public IReadOnlyList<DecayModifier> DecayModifiers { get; }
+        public IReadOnlyList<DecayModifier> Items { get; }
     }
 }

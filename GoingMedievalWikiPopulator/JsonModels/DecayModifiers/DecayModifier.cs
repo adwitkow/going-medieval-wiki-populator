@@ -2,7 +2,7 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
 {
-    public class DecayModifier
+    public class DecayModifier : IIdentifiable
     {
         [JsonConstructor]
         public DecayModifier(

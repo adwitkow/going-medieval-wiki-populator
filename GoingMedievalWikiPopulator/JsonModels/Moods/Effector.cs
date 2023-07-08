@@ -2,7 +2,7 @@
 
 namespace GoingMedievalWikiPopulator.JsonModels.Moods
 {
-    public class Effector
+    public class Effector : IIdentifiable
     {
         [JsonConstructor]
         public Effector(

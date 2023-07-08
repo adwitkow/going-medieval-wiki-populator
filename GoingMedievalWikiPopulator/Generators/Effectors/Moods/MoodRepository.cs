@@ -13,9 +13,9 @@ namespace GoingMedievalWikiPopulator.Generators.Effectors.Moods
             _localizationProvider = locProvider;
         }
 
-        public void Load(EffectorModel model)
+        public void Load(IEnumerable<Effector> effectors)
         {
-            foreach (var effector in model.Effectors)
+            foreach (var effector in effectors)
             {
                 var mood = ExtractMood(effector);
                 if (!default(Mood).Equals(mood))

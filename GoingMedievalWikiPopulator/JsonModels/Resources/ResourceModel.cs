@@ -3,17 +3,17 @@
 namespace GoingMedievalWikiPopulator.JsonModels.Resources
 {
     [AssetFile(@"Resources\Resources.json")]
-    public class ResourceModel : IJsonModel
+    public class ResourceModel : IJsonModel<Resource>
     {
         [JsonConstructor]
         public ResourceModel(
             [JsonProperty("repository")] List<Resource> resources
         )
         {
-            this.Resources = resources;
+            Items = resources;
         }
 
         [JsonProperty("repository")]
-        public IReadOnlyList<Resource> Resources { get; }
+        public IReadOnlyList<Resource> Items { get; }
     }
 }

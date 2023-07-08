@@ -3,17 +3,17 @@
 namespace GoingMedievalWikiPopulator.JsonModels.Moods
 {
     [AssetFile(@"StatsSystem\Effectors.json")]
-    public class EffectorModel : IJsonModel
+    public class EffectorModel : IJsonModel<Effector>
     {
         [JsonConstructor]
         public EffectorModel(
             [JsonProperty("repository")] List<Effector> effectors
         )
         {
-            Effectors = effectors;
+            Items = effectors;
         }
 
         [JsonProperty("repository")]
-        public IReadOnlyList<Effector> Effectors { get; }
+        public IReadOnlyList<Effector> Items { get; }
     }
 }
