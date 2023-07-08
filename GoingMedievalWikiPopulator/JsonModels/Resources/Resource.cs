@@ -28,7 +28,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Resources
             [JsonProperty("rottenId")] string rottenId,
             [JsonProperty("wealthPoints")] int? wealthPoints,
             [JsonProperty("devCommentcategory")] string devCommentcategory,
-            [JsonProperty("category")] int? category,
+            [JsonProperty("category")] ResourceCategory category,
             [JsonProperty("sortingGroup")] string sortingGroup,
             [JsonProperty("almanacTags")] List<string> almanacTags,
             [JsonProperty("devCommentEffectors")] string devCommentEffectors,
@@ -159,7 +159,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.Resources
         public string DevCommentcategory { get; }
 
         [JsonProperty("category")]
-        public int? Category { get; }
+        public ResourceCategory Category { get; }
 
         [JsonProperty("sortingGroup")]
         public string SortingGroup { get; }

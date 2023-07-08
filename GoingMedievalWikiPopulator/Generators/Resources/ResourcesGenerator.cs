@@ -4,9 +4,12 @@
     {
         private readonly IEnumerable<ISubGenerator> _subGenerators;
 
-        public ResourcesGenerator(DecayGenerator decayGenerator, DescriptionGenerator descriptionGenerator)
+        public ResourcesGenerator(
+            DecayGenerator decayGenerator,
+            DescriptionGenerator descriptionGenerator,
+            ItemInfoboxGenerator itemInfoboxGenerator)
         {
-            _subGenerators = new ISubGenerator[] { decayGenerator, descriptionGenerator };
+            _subGenerators = new ISubGenerator[] { decayGenerator, descriptionGenerator, itemInfoboxGenerator };
         }
 
         public override string Directory => "Resources";

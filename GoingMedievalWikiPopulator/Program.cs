@@ -14,6 +14,7 @@ builder.Services.AddTransient<DecayGenerator>();
 builder.Services.AddTransient<DescriptionGenerator>();
 builder.Services.AddTransient<MoodTableGenerator>();
 builder.Services.AddTransient<ResourcesGenerator>();
+builder.Services.AddTransient<ItemInfoboxGenerator>();
 
 var host = builder.Build();
 
