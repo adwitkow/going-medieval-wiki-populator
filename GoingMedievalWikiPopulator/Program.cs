@@ -78,7 +78,7 @@ Console.ReadLine();
 
 return 0;
 
-void ClearOutputDirectory(string directory)
+static void ClearOutputDirectory(string directory)
 {
     var path = Path.Combine("Output", directory);
     if (Directory.Exists(path))

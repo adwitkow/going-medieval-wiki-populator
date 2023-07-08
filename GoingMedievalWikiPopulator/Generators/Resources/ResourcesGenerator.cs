@@ -27,7 +27,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             {
                 var name = _localizationProvider.Localize(resource.LocKeys[0].Name).Trim();
                 var path = Path.Combine(name, "test");
-                var result = new GenerationResult(path, new string[] {});
+                var result = new GenerationResult(path, Array.Empty<string>());
                 results.Add(result);
             }
 
@@ -36,7 +36,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             return results.ToArray();
         }
 
-        private Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
+        private static Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
         {
             var results = new Dictionary<string, Resource>();
 

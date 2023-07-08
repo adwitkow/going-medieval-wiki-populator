@@ -9,7 +9,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
         private const string DecompositionSection = "Decomposition";
         private const string RotSection = "Rot";
 
-        private static readonly Dictionary<string, string> _weathers = new Dictionary<string, string>()
+        private static readonly Dictionary<string, string> Weathers = new()
         {
             { "rain", "Rain" },
             { "snow", "Snow" },
@@ -22,6 +22,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
         private readonly Dictionary<string, DecayModifier> _decayModifiers;
         private readonly Dictionary<string, Resource> _resources;
 
+        private readonly List<string> _lines;
+
         public DecayGenerator(LocalizationProvider locProvider, GameModelProvider modelProvider)
         {
             _localizationProvider = locProvider;
@@ -30,6 +32,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             var decayModel = modelProvider.GetModel<DecayModifierModel>();
             _resources = ProcessResources(resourceModel);
             _decayModifiers = ProcessDecayModel(decayModel);
+
+            _lines = new List<string>();
         }
 
         public IEnumerable<GenerationResult> Generate()
@@ -38,10 +42,8 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
 
             foreach (var resource in _resources.Values)
             {
-                var lines = new List<string>
-                {
-                    "== Decay =="
-                };
+                _lines.Clear();
+                _lines.Add("== Decay ==");
 
                 var fermentModifierId = resource.FermentModifiersId;
                 var decomposeModifierId = resource.DecomposeModifiersId;
@@ -53,37 +55,37 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
 
                 if (cantFerment && cantDecompose && cantRot)
                 {
-                    lines.Add("This item does not decay.");
+                    _lines.Add("This item does not decay.");
                 }
                 else
                 {
-                    AddFermentationSubsection(resource, lines, fermentModifierId);
-                    AddDecompositionSubsection(lines, decomposeModifierId);
-                    AddRotSubsection(resource, lines, rotModifierId);
+                    AddFermentationSubsection(resource, fermentModifierId);
+                    AddDecompositionSubsection(decomposeModifierId);
+                    AddRotSubsection(resource, rotModifierId);
                 }
 
-                string line = lines.Last();
+                string line = _lines.Last();
                 while (string.IsNullOrWhiteSpace(line))
                 {
-                    lines.RemoveAt(lines.Count - 1);
-                    line = lines.Last();
+                    _lines.RemoveAt(_lines.Count - 1);
+                    line = _lines.Last();
                 }
 
                 var name = _localizationProvider.Localize(resource.LocKeys[0].Name).Trim();
                 var path = Path.Combine(name, "decay");
-                results.Add(new GenerationResult(path, lines.ToArray()));
+                results.Add(new GenerationResult(path, _lines.ToArray()));
             }
 
             return results.ToArray();
         }
 
-        private void AddRotSubsection(Resource resource, List<string> lines, string rotModifierId)
+        private void AddRotSubsection(Resource resource, string rotModifierId)
         {
             if (string.IsNullOrEmpty(rotModifierId))
             {
-                lines.Add($"=== {RotSection} ===");
-                lines.Add("This item does not rot.");
-                lines.Add(string.Empty);
+                _lines.Add($"=== {RotSection} ===");
+                _lines.Add("This item does not rot.");
+                _lines.Add(string.Empty);
             }
             else
             {
@@ -94,32 +96,32 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                     rotProduct = _localizationProvider.Localize(rotProductResource.LocKeys[0].Name);
                 }
                 var rotModifier = _decayModifiers[rotModifierId];
-                AddDecaySubsection(lines, rotModifier, RotSection, "Temperature Decay Table", rotProduct);
+                AddDecaySubsection(rotModifier, RotSection, "Temperature Decay Table", rotProduct);
             }
         }
 
-        private void AddDecompositionSubsection(List<string> lines, string decomposeModifierId)
+        private void AddDecompositionSubsection(string decomposeModifierId)
         {
             if (string.IsNullOrEmpty(decomposeModifierId))
             {
-                lines.Add($"=== {DecompositionSection} ===");
-                lines.Add("This item does not decompose.");
-                lines.Add(string.Empty);
+                _lines.Add($"=== {DecompositionSection} ===");
+                _lines.Add("This item does not decompose.");
+                _lines.Add(string.Empty);
             }
             else
             {
                 var decomposeModifier = _decayModifiers[decomposeModifierId];
-                AddDecaySubsection(lines, decomposeModifier, DecompositionSection, "Temperature Decay Table", null);
+                AddDecaySubsection(decomposeModifier, DecompositionSection, "Temperature Decay Table", null);
             }
         }
 
-        private void AddFermentationSubsection(Resource resource, List<string> lines, string fermentModifierId)
+        private void AddFermentationSubsection(Resource resource, string fermentModifierId)
         {
             if (string.IsNullOrEmpty(fermentModifierId))
             {
-                lines.Add($"=== {FermentationSection} ===");
-                lines.Add("This item does not ferment.");
-                lines.Add(string.Empty);
+                _lines.Add($"=== {FermentationSection} ===");
+                _lines.Add("This item does not ferment.");
+                _lines.Add(string.Empty);
             }
             else
             {
@@ -130,68 +132,68 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                     fermentProduct = _localizationProvider.Localize(fermentProductResource.LocKeys[0].Name);
                 }
                 var fermentModifier = _decayModifiers[fermentModifierId];
-                AddDecaySubsection(lines, fermentModifier, FermentationSection, "Fermentation Table", fermentProduct);
+                AddDecaySubsection(fermentModifier, FermentationSection, "Fermentation Table", fermentProduct);
             }
         }
 
-        private void AddDecaySubsection(List<string> lines, DecayModifier modifier, string sectionName, string temperatureTemplate, string? product)
+        private void AddDecaySubsection(DecayModifier modifier, string sectionName, string temperatureTemplate, string? product)
         {
-            lines.Add($"=== {sectionName} ===");
+            _lines.Add($"=== {sectionName} ===");
             if (!string.IsNullOrEmpty(product))
             {
-                lines.Add($"Produces [[{product}]].");
-                lines.Add(string.Empty);
+                _lines.Add($"Produces [[{product}]].");
+                _lines.Add(string.Empty);
             }
 
             if (modifier.TemperatureCoefficients.Any(temp => temp != 0))
             {
-                lines.Add($"{{{{{temperatureTemplate}");
+                _lines.Add($"{{{{{temperatureTemplate}");
                 foreach (var temp in modifier.TemperatureCoefficients)
                 {
-                    lines.Add($"|{temp:F2}");
+                    _lines.Add($"|{temp:F2}");
                 }
-                lines.Add("}}");
+                _lines.Add("}}");
             }
             else
             {
-                lines.Add($"{{{{{temperatureTemplate}}}}}");
+                _lines.Add($"{{{{{temperatureTemplate}}}}}");
             }
 
             var groundDecay = modifier.GroundCoefficient;
             if (groundDecay.HasValue && groundDecay != 0)
             {
                 var ground = groundDecay.Value.ToString("F2");
-                lines.Add($"{{{{Ground Decay Table | Ground = {ground}}}}}");
+                _lines.Add($"{{{{Ground Decay Table | Ground = {ground}}}}}");
             }
             else
             {
-                lines.Add("{{Ground Decay Table}}");
+                _lines.Add("{{Ground Decay Table}}");
             }
 
             var weatherDecay = modifier.WeatherModifiers;
             if (weatherDecay.Values.Any(value => value != 0))
             {
-                lines.Add("{{Weather Decay Table");
+                _lines.Add("{{Weather Decay Table");
                 for (int i = 0; i < weatherDecay.Keys.Count; i++)
                 {
-                    var key = _weathers[weatherDecay.Keys[i]];
+                    var key = Weathers[weatherDecay.Keys[i]];
                     var value = weatherDecay.Values[i];
 
-                    lines.Add($"| {key} = {value:F2}");
+                    _lines.Add($"| {key} = {value:F2}");
                 }
-                lines.Add("}}");
+                _lines.Add("}}");
             }
             else
             {
-                lines.Add("{{Weather Decay Table}}");
+                _lines.Add("{{Weather Decay Table}}");
             }
 
-            lines.Add(string.Empty);
-            lines.Add("{{Clear|left}}");
-            lines.Add(string.Empty);
+            _lines.Add(string.Empty);
+            _lines.Add("{{Clear|left}}");
+            _lines.Add(string.Empty);
         }
 
-        private Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
+        private static Dictionary<string, Resource> ProcessResources(ResourceModel resourceModel)
         {
             var results = new Dictionary<string, Resource>();
 
@@ -203,7 +205,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             return results;
         }
 
-        private Dictionary<string, DecayModifier> ProcessDecayModel(DecayModifierModel model)
+        private static Dictionary<string, DecayModifier> ProcessDecayModel(DecayModifierModel model)
         {
             var results = new Dictionary<string, DecayModifier>();
 

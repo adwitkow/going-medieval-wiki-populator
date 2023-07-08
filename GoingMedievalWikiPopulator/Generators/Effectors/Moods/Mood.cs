@@ -1,6 +1,6 @@
 ﻿namespace GoingMedievalWikiPopulator.Generators.Effectors.Moods
 {
-    internal struct Mood
+    internal readonly struct Mood
     {
         public required string Name { get; init; }
 
