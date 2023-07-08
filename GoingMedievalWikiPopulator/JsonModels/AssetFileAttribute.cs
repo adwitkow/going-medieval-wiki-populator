@@ -1,5 +1,6 @@
 ﻿namespace GoingMedievalWikiPopulator.JsonModels
 {
+    [AttributeUsage(AttributeTargets.Class)]
     internal class AssetFileAttribute : Attribute
     {
         public AssetFileAttribute(string path)
