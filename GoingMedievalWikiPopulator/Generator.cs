@@ -6,7 +6,7 @@
 
         protected abstract IEnumerable<ISubGenerator> SubGenerators { get; }
 
-        public GenerationResult[] Generate()
+        public async Task<GenerationResult[]> Generate()
         {
             var results = new List<GenerationResult>();
 
@@ -14,7 +14,7 @@
             {
                 foreach (var subGenerator in SubGenerators)
                 {
-                    results.AddRange(subGenerator.Generate());
+                    results.AddRange(await subGenerator.Generate());
                 }
             }
 

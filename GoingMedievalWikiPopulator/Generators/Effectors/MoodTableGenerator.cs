@@ -21,10 +21,12 @@ namespace GoingMedievalWikiPopulator.Generators.Effectors
 
         public string Directory => "Mood";
 
-        public GenerationResult[] Generate()
+        public Task<GenerationResult[]> Generate()
         {
             GenerateTable();
-            return new[] { new GenerationResult("Table", _lines.ToArray()) };
+
+            var result = new[] { new GenerationResult("Table", _lines.ToArray()) };
+            return Task.FromResult(result);
         }
 
         public void GenerateTable()

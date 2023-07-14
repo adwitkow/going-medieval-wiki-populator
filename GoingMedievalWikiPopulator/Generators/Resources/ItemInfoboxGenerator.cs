@@ -16,7 +16,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             _resources = gameModelProvider.GetModels<ResourceModel, Resource>();
         }
 
-        public IEnumerable<GenerationResult> Generate()
+        public Task<IEnumerable<GenerationResult>> Generate()
         {
             var results = new List<GenerationResult>();
 
@@ -65,7 +65,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                 results.Add(new GenerationResult(path, _lines.ToArray()));
             }
 
-            return results;
+            return Task.FromResult(results.AsEnumerable());
         }
 
         private string GetCategories(Resource resource)

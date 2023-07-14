@@ -2,6 +2,7 @@
 using GoingMedievalWikiPopulator;
 using GoingMedievalWikiPopulator.Generators;
 using GoingMedievalWikiPopulator.Generators.Effectors;
+using GoingMedievalWikiPopulator.Generators.ItemArticles;
 using GoingMedievalWikiPopulator.Generators.Resources;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -15,6 +16,7 @@ builder.Services.AddTransient<DescriptionGenerator>();
 builder.Services.AddTransient<MoodTableGenerator>();
 builder.Services.AddTransient<ResourcesGenerator>();
 builder.Services.AddTransient<ItemInfoboxGenerator>();
+builder.Services.AddTransient<ItemArticleGenerator>();
 
 var host = builder.Build();
 
@@ -24,7 +26,8 @@ var provider = serviceScope.ServiceProvider;
 var generators = new[]
 {
     typeof(MoodTableGenerator),
-    typeof(ResourcesGenerator)
+    typeof(ResourcesGenerator),
+    typeof(ItemArticleGenerator)
 };
 
 Console.WriteLine("Please choose which of the following generators you wish to use:");
@@ -50,7 +53,7 @@ var generator = (IGenerator)provider.GetRequiredService(generatorType);
 
 ClearOutputDirectory(generator.Directory);
 
-var results = generator.Generate();
+var results = await generator.Generate();
 
 foreach (var result in results)
 {

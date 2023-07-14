@@ -17,7 +17,7 @@ namespace GoingMedievalWikiPopulator.Generators
             _lines = new List<string>();
         }
 
-        public IEnumerable<GenerationResult> Generate()
+        public Task<IEnumerable<GenerationResult>> Generate()
         {
             var results = new List<GenerationResult>();
             var resourceKeys = _resources.Values.Select(res => res.LocKeys[0]);
@@ -33,7 +33,8 @@ namespace GoingMedievalWikiPopulator.Generators
                 var path = Path.Combine(name, "description");
                 results.Add(new GenerationResult(path, _lines.ToArray()));
             }
-            return results;
+
+            return Task.FromResult(results.AsEnumerable());
         }
     }
 }
