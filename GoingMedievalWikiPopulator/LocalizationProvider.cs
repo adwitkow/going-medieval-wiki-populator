@@ -27,7 +27,7 @@ namespace GoingMedievalWikiPopulator
 
         public string Localize(string stringId)
         {
-            return TryLocalize(stringId, out var result) ? result! : stringId;
+            return TryLocalize(stringId, out var result) ? result!.Trim() : stringId;
         }
     }
 }

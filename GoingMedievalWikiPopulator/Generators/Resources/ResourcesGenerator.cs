@@ -5,11 +5,15 @@
         private readonly IEnumerable<ISubGenerator> _subGenerators;
 
         public ResourcesGenerator(
+            ProductionGenerator productionGenerator,
             DecayGenerator decayGenerator,
             DescriptionGenerator descriptionGenerator,
             ItemInfoboxGenerator itemInfoboxGenerator)
         {
-            _subGenerators = new ISubGenerator[] { decayGenerator, descriptionGenerator, itemInfoboxGenerator };
+            _subGenerators = new ISubGenerator[]
+            {
+                productionGenerator, decayGenerator, descriptionGenerator, itemInfoboxGenerator
+            };
         }
 
         public override string Directory => "Resources";

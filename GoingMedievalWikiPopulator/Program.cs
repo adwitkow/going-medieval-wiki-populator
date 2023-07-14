@@ -17,6 +17,7 @@ builder.Services.AddTransient<MoodTableGenerator>();
 builder.Services.AddTransient<ResourcesGenerator>();
 builder.Services.AddTransient<ItemInfoboxGenerator>();
 builder.Services.AddTransient<ItemArticleGenerator>();
+builder.Services.AddTransient<ProductionGenerator>();
 
 var host = builder.Build();
 

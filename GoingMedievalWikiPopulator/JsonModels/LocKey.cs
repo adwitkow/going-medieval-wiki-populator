@@ -6,20 +6,15 @@ namespace GoingMedievalWikiPopulator.JsonModels
     {
         [JsonConstructor]
         public LocKey(
-            [JsonProperty("language")] int? language,
             [JsonProperty("name")] string name,
             [JsonProperty("info")] string info,
             [JsonProperty("tooltipLines")] List<string> tooltipLines
         )
         {
-            this.Language = language;
             this.Name = name;
             this.Info = info;
             this.TooltipLines = tooltipLines;
         }
-
-        [JsonProperty("language")]
-        public int? Language { get; }
 
         [JsonProperty("name")]
         public string Name { get; }
@@ -42,7 +37,7 @@ namespace GoingMedievalWikiPopulator.JsonModels
 
         public override int GetHashCode()
         {
-            return HashCode.Combine(TooltipLines, Language, Name, Info);
+            return HashCode.Combine(TooltipLines, Name, Info);
         }
 
         private bool Equals(LocKey other)
@@ -63,8 +58,7 @@ namespace GoingMedievalWikiPopulator.JsonModels
                 }
             }
 
-            return Language == other.Language
-                && Name == other.Name
+            return Name == other.Name
                 && Info == other.Info;
         }
     }
