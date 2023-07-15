@@ -1,17 +1,17 @@
 ﻿using Newtonsoft.Json;
 
-namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
+namespace GoingMedievalWikiPopulator.JsonModels
 {
-    public class WeatherModifiers
+    public class KeysAndValues
     {
         [JsonConstructor]
-        public WeatherModifiers(
+        public KeysAndValues(
             [JsonProperty("keys")] List<string> keys,
             [JsonProperty("values")] List<double?> values
         )
         {
-            this.Keys = keys;
-            this.Values = values;
+            Keys = keys;
+            Values = values;
         }
 
         [JsonProperty("keys")]

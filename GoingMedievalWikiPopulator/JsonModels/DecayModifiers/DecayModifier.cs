@@ -9,7 +9,7 @@ namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
             [JsonProperty("id")] string id,
             [JsonProperty("temperatureCoefficients")] List<double?> temperatureCoefficients,
             [JsonProperty("groundCoefficient")] double? groundCoefficient,
-            [JsonProperty("weatherModifiers")] WeatherModifiers weatherModifiers
+            [JsonProperty("weatherModifiers")] KeysAndValues weatherModifiers
         )
         {
             this.Id = id;
@@ -28,6 +28,6 @@ namespace GoingMedievalWikiPopulator.JsonModels.DecayModifiers
         public double? GroundCoefficient { get; }
 
         [JsonProperty("weatherModifiers")]
-        public WeatherModifiers WeatherModifiers { get; }
+        public KeysAndValues WeatherModifiers { get; }
     }
 }
