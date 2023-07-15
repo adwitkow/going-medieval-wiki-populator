@@ -1,4 +1,5 @@
 ﻿using System.Xml.Linq;
+using GoingMedievalWikiPopulator.JsonModels.ProductionBuildings;
 using GoingMedievalWikiPopulator.JsonModels.Productions;
 using GoingMedievalWikiPopulator.JsonModels.Resources;
 
@@ -9,6 +10,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
         private readonly LocalizationProvider _localizationProvider;
         private readonly Dictionary<string, Resource> _resources;
         private readonly Dictionary<string, Production> _productions;
+        private readonly Dictionary<string, ProductionBuilding> _productionBuildings;
 
         private readonly ProductionMapping _mapping;
         private readonly List<string> _lines;
@@ -17,6 +19,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
         {
             _resources = gameModelProvider.GetModels<ResourceModel, Resource>();
             _productions = gameModelProvider.GetModels<ProductionModel, Production>();
+            _productionBuildings = gameModelProvider.GetModels<ProductionBuildingsModel, ProductionBuilding>();
             _localizationProvider = localizationProvider;
 
             _mapping = LoadProductions();
