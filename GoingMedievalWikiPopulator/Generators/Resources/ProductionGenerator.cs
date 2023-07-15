@@ -24,7 +24,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
             _lines = new List<string>();
         }
 
-        public IEnumerable<GenerationResult> Generate()
+        public Task<IEnumerable<GenerationResult>> Generate()
         {
             var results = new List<GenerationResult>();
 
@@ -113,7 +113,7 @@ namespace GoingMedievalWikiPopulator.Generators.Resources
                 results.Add(new GenerationResult(path, _lines.ToArray()));
             }
 
-            return results;
+            return Task.FromResult(results.AsEnumerable());
         }
 
         private ProductionMapping LoadProductions()
